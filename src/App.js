@@ -21,7 +21,7 @@ function App() {
     completedPeople();
   }
 
-  const completed = () => toast("Yeni Task Eklendi!");
+  const completed = () => toast("Görev Tamamlandı!");
 
   const completedPeople = () => toast("Yeni Kişi Eklendi!!");
 
