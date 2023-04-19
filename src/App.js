@@ -5,31 +5,54 @@ import TaskForm from "./TaskForm";
 import TaskHookForm from "./TaskHookForm";
 import PeopleForm from "./PeopleForm";
 import { initialTasks, initialTeam } from "./data";
-
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 function App() {
   const [tasks, setTasks] = useState(initialTasks);
   const [team, setTeam] = useState(initialTeam);
 
   function handleTaskSubmit(yeniTask) {
-    setTasks([yeniTask, ...tasks])
+    setTasks([yeniTask, ...tasks]);
+    notify();
   }
 
   function handlePeopleSubmit(yeniKisi) {
-    setTeam([...team, yeniKisi])
+    setTeam([...team, yeniKisi]);
+    completedPeople();
   }
+
+  const completed = () => toast("Yeni Task Eklendi!");
+
+  const completedPeople = () => toast("Yeni Kişi Eklendi!!");
 
   function handleComplete(id) {
-    console.log("tamamlama fonksiyonunu buraya yazın")
+    const updatedTasks = tasks.map((task) => {
+      if (task.id === id) {
+        return {
+          ...task,
+          status: "yapıldı",
+        };
+      }
+      return task;
+    });
+    setTasks(updatedTasks);
+    completed();
+
+    console.log("tamamlama fonksiyonunu buraya yazın");
   }
 
+  const notify = () => toast("Task Kaydedildi!");
   return (
     <div className="app">
       <div className="formColumn">
         <div className="form-container">
           <h2>Yeni Task</h2>
           {/* <TaskForm kisiler={team} submitFn={handleTaskSubmit} /> */}
-          <TaskHookForm kisiler={team} submitFn={handleTaskSubmit} />
+          <TaskHookForm
+            kisiler={team}
+            submitFn={handleTaskSubmit}
+            toast={notify}
+          />
         </div>
 
         <div className="form-container">
@@ -59,7 +82,18 @@ function App() {
           </div>
         </div>
       </div>
-
+      <ToastContainer
+        position="bottom-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
     </div>
   );
 }
